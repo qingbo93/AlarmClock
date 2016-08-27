@@ -1,3 +1,16 @@
+/********************************************************
+ * AlarmClock Android Project                           *
+ *                                                      *
+ * Author:  Qingbo Jiang                                *
+ *                                                      *
+ * Start Date: July 24th 2016                           *
+ *                                                      *
+ * Purpose: A simple alarm clock.                       *
+ *                                                      *
+ * CopyRight: Please do not reuse unless you have       *
+ *            obtained permission from the owner.       *
+ *            Thank you.                                *
+ ********************************************************/
 package qingapps.alarmclock;
 
 import android.annotation.TargetApi;

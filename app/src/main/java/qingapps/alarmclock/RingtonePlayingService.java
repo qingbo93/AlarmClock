@@ -11,35 +11,41 @@
  *            obtained permission from the owner.       *
  *            Thank you.                                *
  ********************************************************/
-
 package qingapps.alarmclock;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
+import android.app.Service;
 import android.content.Intent;
+import android.media.MediaPlayer;
+import android.os.IBinder;
+import android.support.annotation.Nullable;
 import android.util.Log;
-
+import android.widget.Toast;
+import java.security.Provider;
 /**
- * Created by king on 8/18/2016.
+ * Created by king on 8/26/2016.
  */
-public class Alarm_Receiver extends BroadcastReceiver {
+public class RingtonePlayingService extends Service {
+
+
+    MediaPlayer media_song;
+    @Nullable
     @Override
-    public void onReceive(Context context, Intent intent) {
-        Log.e("Sucess!", "We did it fam");
-
-
-        //create an intent to the ringtone service
-        Intent service_intent=new Intent(context, RingtonePlayingService.class);
-
-        //start ringtone service
-        context.startService(service_intent);
-
-
+    public IBinder onBind(Intent intent) {
+        return null;
     }
 
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId){
+       Log.i("LocalService", "Recieved start id " + startId +": " + intent);
 
+        media_song = MediaPlayer.create(this,R.raw.test);
+        media_song.start();
 
-
-
-
+       return START_NOT_STICKY;
+   }
+    @Override
+    public void onDestroy()
+    {
+        Toast.makeText(this,"On Destroy Call", Toast.LENGTH_SHORT).show();
+    }
 }

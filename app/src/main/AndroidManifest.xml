@@ -21,10 +21,13 @@
      App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
 
 
-        <receiver android:name=".Alarm_Receiver">
+        <receiver android:name=".Alarm_Receiver"/>
 
-        </receiver>
 
+        <service android:name=".RingtonePlayingService"
+            android:enabled="true">
+
+        </service>
 
         <meta-data
             android:name="com.google.android.gms.version"
