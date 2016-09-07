@@ -31,7 +31,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -39,7 +42,7 @@ import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     //--Alarm Manager
     AlarmManager alarm_manager;
@@ -47,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
     TextView update_text;
     Context context;
     PendingIntent pending_intent;
+    int ringtone_selector;
 
     //---Alarm Manager
 
@@ -73,6 +77,23 @@ public class MainActivity extends AppCompatActivity {
 
         //create intent
         final Intent my_intent= new Intent(this.context, Alarm_Receiver.class);
+
+
+
+        //create spinner for song selection
+        Spinner spinner = (Spinner) findViewById(R.id.music_spinner);
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.music_spinner_array, android.R.layout.simple_spinner_item);
+        // Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        spinner.setAdapter(adapter);
+        //set onclick listener for spinner
+        spinner.setOnItemSelectedListener(this);
+
+
+
 
         //init start button
         Button alarm_on = (Button) findViewById(R.id.alarm_on);
@@ -123,6 +144,13 @@ public class MainActivity extends AppCompatActivity {
                 //method that changes the update text box
                 set_alarm_text("Alarm set to:" + hour_string +":"+ minute_string);
 
+                //extras
+                my_intent.putExtra("extra","on");
+
+                //extra value from dropdown menu/spinners
+
+                my_intent.putExtra("ringtone_choice",ringtone_selector);
+
                 //pending intent
                 pending_intent= PendingIntent.getBroadcast(MainActivity.this,0,my_intent,PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -130,10 +158,12 @@ public class MainActivity extends AppCompatActivity {
                 alarm_manager.set(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),pending_intent);
 
             }
+
+
         });
 
         //init stop button
-        Button alarm_off = (Button) findViewById(R.id.alarm_off);
+        final Button alarm_off = (Button) findViewById(R.id.alarm_off);
 
 
 
@@ -142,6 +172,18 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 set_alarm_text("Alarm Off!");
+
+                //cancel alarm
+                alarm_manager.cancel(pending_intent);
+
+                //extras
+                my_intent.putExtra("extra","off");
+                //stop ringtone
+
+                //extra value from dropdown menu/spinners (to prevent null/ crashing?)
+                my_intent.putExtra("ringtone_choice",ringtone_selector);
+
+                sendBroadcast(my_intent);
             }
         });
 
@@ -171,5 +213,17 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+        ringtone_selector = (int) l;
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+
     }
 }

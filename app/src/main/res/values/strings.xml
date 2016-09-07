@@ -1,4 +1,11 @@
 <resources>
     <string name="app_name">AlarmClock</string>
     <string name="action_settings">Settings</string>
+
+    <string-array name="music_spinner_array">
+        <item>Random</item>
+        <item>Harumodoki</item>
+        <item>Vidro Moyou</item>
+
+    </string-array>
 </resources>
