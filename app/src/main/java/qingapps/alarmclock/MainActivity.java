@@ -158,8 +158,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 alarm_manager.set(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(),pending_intent);
 
             }
-
-
+            
         });
 
         //init stop button
